@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tsmeta"
+version = "0.1.0"
+description = "Open-source Python library for intelligent time-series analysis and forecasting."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "Sai Chetan Reddy" }
+]
