@@ -56,3 +56,8 @@ select = ["E", "F", "I", "B", "UP"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+
+[project.urls]
+Homepage = "https://github.com/saichetanreddy07/TSMeta"
+Repository = "https://github.com/saichetanreddy07/TSMeta"
+Issues = "https://github.com/saichetanreddy07/TSMeta/issues"
