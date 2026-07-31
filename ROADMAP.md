@@ -21,7 +21,7 @@ professional software engineering practices.
 
 ## v0.1.0 - Project Foundation
 
-Status: Completed
+Status: Beta
 
 ### Goals
 
@@ -32,6 +32,7 @@ Status: Completed
 - Development tooling
 - GitHub Actions
 - Testing framework
+- Data loading, validation, cleaning, and Phase 1 analysis
 
 ---
 

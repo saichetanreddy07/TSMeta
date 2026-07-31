@@ -14,7 +14,8 @@ class ValidationReport:
         rows: Number of rows in the dataset.
         columns: Number of columns in the dataset.
         is_empty: Whether the dataset has no data.
-        is_valid: Whether the dataset satisfies the current validation rules.
+        is_valid: Whether the dataset is non-empty under the current validation
+            rules.
         duplicate_rows: Number of duplicate rows in the dataset.
         missing_values: Missing-value count for each column.
         dtypes: String representation of each column's data type.
@@ -58,7 +59,7 @@ class ValidationReport:
                 f"Rows: {self.rows}",
                 f"Columns: {self.columns}",
                 f"Empty: {self.is_empty}",
-                f"Valid: {self.is_valid}",
+                f"Valid (non-empty dataset): {self.is_valid}",
                 f"Duplicate rows: {self.duplicate_rows}",
                 f"Missing values: {missing_value_count}",
                 "Time-series validation",

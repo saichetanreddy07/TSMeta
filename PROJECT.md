@@ -14,6 +14,8 @@ analyzing tabular time-series datasets.
 The library is built around pandas DataFrames and provides a simple public API
 for common dataset preparation and inspection workflows.
 
+This project specification describes the current v0.1.0 beta implementation.
+
 ---
 
 # Core Philosophy
@@ -73,6 +75,7 @@ Current public objects:
 - `analyze`
 - `AnalysisResult`
 - `DatasetAnalysis`
+- `__version__`
 
 Avoid exposing unnecessary internal helper functions.
 
@@ -93,6 +96,8 @@ Avoid exposing unnecessary internal helper functions.
 - Validates generic dataset properties.
 - Reports row and column counts, empty state, duplicate rows, missing values,
   and data types.
+- Defines `ValidationReport.is_valid` as a non-empty dataset indicator under
+  the current validation rules.
 - Performs basic time-series validation for datasets with native pandas datetime
   columns.
 - Returns a `ValidationReport`.
@@ -321,6 +326,9 @@ Use consistent naming conventions.
 TSMeta/
   docs/
   examples/
+    basic_workflow.py
+    cleaning_options.py
+    dataframe_input.py
   tests/
   tsmeta/
     __init__.py
@@ -329,6 +337,7 @@ TSMeta/
     loader.py
     validation.py
   README.md
+  CHANGELOG.md
   LICENSE
   pyproject.toml
   PROJECT.md

@@ -71,7 +71,7 @@ def test_validation_report_summary_is_human_readable() -> None:
     assert "Dataset validation summary" in summary
     assert "Rows: 2" in summary
     assert "Columns: 1" in summary
-    assert "Valid: True" in summary
+    assert "Valid (non-empty dataset): True" in summary
     assert "Missing values: 1" in summary
 
 

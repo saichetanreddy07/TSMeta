@@ -1,15 +1,28 @@
 # TSMeta
 
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![PyPI](https://img.shields.io/badge/PyPI-coming%20soon-lightgrey.svg)
+![CI](https://img.shields.io/badge/CI-coming%20soon-lightgrey.svg)
+![Coverage](https://img.shields.io/badge/coverage-coming%20soon-lightgrey.svg)
+
 TSMeta is an open-source Python library for loading, validating, cleaning, and
 analyzing tabular time-series datasets.
 
 The project provides a simple public API around pandas DataFrames while keeping
 each processing stage independent and easy to test.
 
+## Why TSMeta?
+
+Forecasting work usually starts before model selection: data needs to be loaded,
+checked, cleaned, and summarized in a repeatable way. TSMeta focuses on that
+preparation layer. It helps prepare and analyze time-series datasets so they are
+easier to understand before they enter a forecasting workflow.
+
 ## Status
 
-TSMeta currently provides data loading, generic and time-series validation, data
-cleaning, and Phase 1 dataset analysis.
+TSMeta v0.1.0 is a beta release. It currently provides data loading, generic and
+time-series validation, data cleaning, and Phase 1 dataset analysis.
 
 ## Current Workflow
 
@@ -73,6 +86,8 @@ print(analysis.summary())
 
 - Dataset validation for shape, empty data, duplicate rows, missing values, and
   data types.
+- `ValidationReport.is_valid` indicates whether the dataset is non-empty under
+  the current validation rules.
 - Time-series validation for native pandas datetime columns, duplicate
   timestamps, timestamp ordering, inferred frequency, and univariate or
   multivariate structure.
@@ -175,6 +190,7 @@ The package exposes the following public API from `tsmeta`:
 - `analyze`
 - `AnalysisResult`
 - `DatasetAnalysis`
+- `__version__`
 
 ## Current Capabilities
 
@@ -213,6 +229,11 @@ TSMeta/
     test_loader.py
     test_package.py
     test_validation.py
+  examples/
+    basic_workflow.py
+    cleaning_options.py
+    dataframe_input.py
+  CHANGELOG.md
   README.md
   PROJECT.md
   ROADMAP.md
