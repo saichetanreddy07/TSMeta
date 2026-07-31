@@ -6,15 +6,13 @@ Author: Sai Chetan Reddy
 
 ---
 
-# Vision
+# Overview
 
-TSMeta is an open-source Python library for intelligent time-series analysis, automated forecasting model recommendation, forecasting, benchmarking, visualization, and reporting.
+TSMeta is an open-source Python library for loading, validating, cleaning, and
+analyzing tabular time-series datasets.
 
-The goal is NOT to replace forecasting libraries such as Prophet or Statsmodels.
-
-The goal is to provide a unified interface that helps users analyze datasets, recommend suitable forecasting models using statistical meta-features, run forecasts, benchmark multiple models, and generate reports with minimal code.
-
-The library should be beginner-friendly while following professional software engineering practices.
+The library is built around pandas DataFrames and provides a simple public API
+for common dataset preparation and inspection workflows.
 
 ---
 
@@ -30,7 +28,8 @@ TSMeta should be:
 - Production ready
 - Open source friendly
 
-The public API should remain simple even if the internal implementation becomes more sophisticated.
+The public API should remain simple even if the internal implementation becomes
+more sophisticated.
 
 ---
 
@@ -48,104 +47,141 @@ The public API should remain simple even if the internal implementation becomes 
 
 # Public API
 
-The public API should remain clean.
-
-Users should eventually be able to write:
+The public API is exposed from the `tsmeta` package:
 
 ```python
 import tsmeta
 
 df = tsmeta.load_data("sales.csv")
 
-analysis = tsmeta.analyze(df)
+validation = tsmeta.validate_data(df)
 
-recommendation = tsmeta.recommend(df)
+cleaning = tsmeta.clean_data(df)
+cleaned_df = cleaning.data
 
-forecast = tsmeta.forecast(df)
-
-benchmark = tsmeta.benchmark(df)
+analysis = tsmeta.analyze(cleaned_df)
 ```
 
-Avoid exposing unnecessary internal functions.
+Current public objects:
+
+- `load_data`
+- `validate_data`
+- `ValidationReport`
+- `clean_data`
+- `CleaningResult`
+- `CleaningReport`
+- `analyze`
+- `AnalysisResult`
+- `DatasetAnalysis`
+
+Avoid exposing unnecessary internal helper functions.
 
 ---
 
-# Planned Modules
+# Current Modules
 
-tsmeta/
+`tsmeta/loader.py`
 
-- preprocessing
-- analysis
-- feature_extraction
-- recommendation
-- forecasting
-- benchmarking
-- visualization
-- reports
-- utils
+- Loads CSV files.
+- Loads Excel files.
+- Accepts pandas DataFrames and returns independent copies.
+- Raises clear errors for missing files, unsupported file types, and invalid
+  input types.
 
-Each module should have only one responsibility.
+`tsmeta/validation.py`
+
+- Validates generic dataset properties.
+- Reports row and column counts, empty state, duplicate rows, missing values,
+  and data types.
+- Performs basic time-series validation for datasets with native pandas datetime
+  columns.
+- Returns a `ValidationReport`.
+- Does not modify the input DataFrame.
+
+`tsmeta/cleaning.py`
+
+- Cleans common structural issues.
+- Standardizes column names.
+- Converts clear datetime and numeric columns.
+- Trims string whitespace.
+- Fills numeric and categorical missing values.
+- Sorts datasets with exactly one datetime column.
+- Optionally inserts missing timestamps and fills inserted rows.
+- Returns a `CleaningResult` containing cleaned data and cleaning metadata.
+- Does not modify the original input DataFrame.
+
+`tsmeta/analysis.py`
+
+- Computes dataset-level statistics.
+- Reports row and column counts.
+- Counts numeric, categorical, and datetime columns.
+- Computes missing value percentage.
+- Computes duplicate row percentage.
+- Computes memory usage in bytes and MB.
+- Returns an `AnalysisResult` containing a `DatasetAnalysis` report.
+- Does not modify the input DataFrame.
+
+Each module has one responsibility and should remain independent from the other
+pipeline stages.
 
 ---
 
 # Architecture
 
-The overall pipeline is
+The current pipeline is:
 
-Dataset
+```text
+load_data()
+    |
+    v
+validate_data()
+    |
+    v
+clean_data()
+    |
+    v
+analyze()
+```
 
-↓
+Every stage is independent:
 
-Validation
-
-↓
-
-Analysis
-
-↓
-
-Meta-feature Extraction
-
-↓
-
-Recommendation Engine
-
-↓
-
-Forecasting
-
-↓
-
-Benchmarking
-
-↓
-
-Visualization
-
-↓
-
-Report Generation
-
-Every stage should be independent.
+- `load_data()` returns a pandas DataFrame.
+- `validate_data()` inspects a DataFrame and returns validation metadata.
+- `clean_data()` returns a new cleaned DataFrame and cleaning metadata.
+- `analyze()` inspects a DataFrame and returns dataset analysis metadata.
 
 Avoid tightly coupling modules.
 
 ---
 
+# Current Scope
+
+- Works with pandas DataFrames.
+- Supports CSV and Excel input.
+- Performs dataset validation.
+- Performs basic time-series validation.
+- Cleans datasets without modifying the original input.
+- Computes dataset-level statistics.
+- Does not modify input data during validation or analysis.
+- Assumes at most one datetime column for Version 1 behavior.
+- Does not support multiple independent time series.
+
+---
+
 # Coding Standards
 
-Use
+Use:
 
 - Python 3.11+
 - Type hints everywhere
 - Google-style docstrings
-- PEP8
-- Ruff compatible
-- Black compatible
+- PEP 8
+- Ruff compatible formatting and linting
+- Black compatible formatting
 
 Maximum function size:
 
-~50 lines preferred.
+Approximately 50 lines preferred.
 
 Split large functions into smaller reusable helpers.
 
@@ -155,31 +191,30 @@ Avoid duplicated code.
 
 # Documentation Rules
 
-Every public function must include
+Every public function must include:
 
 - Description
 - Parameters
 - Returns
 - Raises
-- Example (when useful)
+- Example when useful
 
 Example:
 
 ```python
 def analyze(df):
-    """
-    Analyze a time-series dataset.
+    """Analyze a dataset without modifying the input DataFrame.
 
     Args:
         df:
             Input DataFrame.
 
     Returns:
-        AnalysisReport
+        AnalysisResult.
 
     Raises:
-        ValueError:
-            If the dataset is invalid.
+        TypeError:
+            If the input is not a pandas DataFrame.
     """
 ```
 
@@ -191,13 +226,11 @@ Never silently ignore errors.
 
 Raise meaningful exceptions.
 
-Examples
+Examples:
 
-FileNotFoundError
-
-ValueError
-
-TypeError
+- `FileNotFoundError`
+- `ValueError`
+- `TypeError`
 
 Provide descriptive messages.
 
@@ -205,9 +238,9 @@ Provide descriptive messages.
 
 # Logging
 
-Never use print() inside library code.
+Never use `print()` inside library code.
 
-Use the logging module when logging is necessary.
+Use the standard logging module when logging is necessary.
 
 ---
 
@@ -215,7 +248,7 @@ Use the logging module when logging is necessary.
 
 Every public feature should include pytest tests.
 
-Tests should cover
+Tests should cover:
 
 - Normal cases
 - Invalid inputs
@@ -229,16 +262,20 @@ Prefer lightweight dependencies.
 
 Avoid introducing unnecessary packages.
 
-Current planned dependencies include
+Current runtime dependencies:
 
 - pandas
-- numpy
-- scipy
-- scikit-learn
-- statsmodels
-- matplotlib
+- openpyxl
+- xlrd
 
-Additional dependencies should only be introduced if they provide significant value.
+Current development dependencies:
+
+- black
+- pytest
+- ruff
+
+Additional dependencies should only be introduced if they provide significant
+value.
 
 ---
 
@@ -246,7 +283,7 @@ Additional dependencies should only be introduced if they provide significant va
 
 Avoid unnecessary loops.
 
-Prefer vectorized pandas/numpy operations.
+Prefer vectorized pandas operations.
 
 Avoid repeated computations.
 
@@ -256,11 +293,11 @@ Design with scalability in mind.
 
 # Versioning
 
-Semantic Versioning
+Semantic Versioning:
 
 MAJOR.MINOR.PATCH
 
-Example
+Example:
 
 0.1.0
 
@@ -268,131 +305,58 @@ Example
 
 # Code Style
 
-Prefer
+Prefer readable code over clever code.
 
-Readable code
+Use meaningful variable names.
 
-instead of
+Use small reusable functions.
 
-Clever code.
-
-Meaningful variable names.
-
-Small reusable functions.
-
-Consistent naming conventions.
-
----
-
-# AI Development Rules
-
-When implementing code:
-
-Do NOT change the public API without approval.
-
-Do NOT modify unrelated modules.
-
-Do NOT introduce unnecessary dependencies.
-
-Do NOT generate placeholder implementations unless explicitly requested.
-
-Always preserve backwards compatibility whenever possible.
-
-Prefer maintainability over premature optimization.
+Use consistent naming conventions.
 
 ---
 
 # Repository Structure
 
+```text
 TSMeta/
-
-docs/
-
-examples/
-
-tests/
-
-tsmeta/
-
-README.md
-
-LICENSE
-
-pyproject.toml
-
-PROJECT.md
-
----
-
-# Current Milestone
-
-Week 1
-
-Repository setup
-
-Package structure
-
-Documentation
-
-Public API design
-
-Basic project configuration
-
-No forecasting functionality yet.
+  docs/
+  examples/
+  tests/
+  tsmeta/
+    __init__.py
+    analysis.py
+    cleaning.py
+    loader.py
+    validation.py
+  README.md
+  LICENSE
+  pyproject.toml
+  PROJECT.md
+  ROADMAP.md
+```
 
 ---
 
-# Long-Term Goals
+# Current Implementation Status
 
-Version 0.1
-
-Repository setup
-
-Version 0.2
-
-Dataset loading
-
-Version 0.3
-
-Dataset analysis
-
-Version 0.4
-
-Meta-feature extraction
-
-Version 0.5
-
-Recommendation engine
-
-Version 0.6
-
-Forecasting
-
-Version 0.7
-
-Benchmarking
-
-Version 0.8
-
-Visualization
-
-Version 1.0
-
-Stable public release
+- `load_data`: CSV, Excel, and DataFrame loading.
+- `validate_data`: Generic and time-series dataset validation.
+- `clean_data`: Structural, data-type, missing-value, and time-series cleaning.
+- `analyze`: Phase 1 dataset-level analysis.
 
 ---
 
 # AI Instructions
 
-When generating code
+When generating code:
 
-Always
+Always:
 
-- use type hints
-- include docstrings
-- keep functions modular
-- write production-quality code
-- generate accompanying tests whenever applicable
+- Use type hints.
+- Include docstrings.
+- Keep functions modular.
+- Write production-quality code.
+- Generate accompanying tests whenever applicable.
 
 Never sacrifice readability for brevity.
 

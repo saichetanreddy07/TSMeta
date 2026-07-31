@@ -8,17 +8,20 @@ The roadmap is subject to change as the project grows.
 
 # Vision
 
-Build an open-source Python library for intelligent time-series analysis, forecasting model recommendation, forecasting, benchmarking, visualization, and reporting.
+Build an open-source Python library for intelligent time-series analysis,
+forecasting model recommendation, forecasting, benchmarking, visualization, and
+reporting.
 
-The goal is to simplify the end-to-end forecasting workflow while following professional software engineering practices.
+The goal is to simplify the end-to-end forecasting workflow while following
+professional software engineering practices.
 
 ---
 
 # Version Roadmap
 
-## v0.1.0 — Project Foundation
+## v0.1.0 - Project Foundation
 
-Status: In Progress
+Status: Completed
 
 ### Goals
 
@@ -32,40 +35,64 @@ Status: In Progress
 
 ---
 
-## v0.2.0 — Data Loading & Validation
+## v0.2.0 - Data Loading & Validation
+
+Status: Completed
 
 ### Features
 
-- CSV Loader
-- Excel Loader
-- Pandas DataFrame support
-- Datetime detection
-- Frequency detection
-- Dataset validation
-- Missing value checks
-- Duplicate timestamp detection
+- `load_data`: CSV loader
+- `load_data`: Excel loader
+- `load_data`: pandas DataFrame support
+- `validate_data`: datetime detection
+- `validate_data`: frequency detection
+- `validate_data`: generic dataset validation
+- `validate_data`: missing-value checks
+- `validate_data`: duplicate timestamp detection
+- `clean_data`: structural, data-type, missing-value, and time-series cleaning
+
+## Current Implemented Modules
+
+- `load_data`
+- `validate_data`
+- `clean_data`
+- `analyze` (Phase 1)
+
+## Planned Modules
+
+- `recommend`
+- `forecast`
+- `benchmark`
+- visualization
+- reporting
 
 ---
 
-## v0.3.0 — Dataset Analysis
+## v0.3.0 - Dataset Analysis
+
+Status: Phase 1 implemented
 
 ### Features
 
 - Dataset summary
-- Statistical overview
+- Dataset-level statistics
+- Row and column counts
+- Numeric, categorical, and datetime column counts
+- Missing value percentage
+- Duplicate row percentage
+- Memory usage in bytes and MB
 - Trend detection
 - Seasonality hints
 - Stationarity tests
-- Missing value report
 - Dataset profiling
 
 ---
 
-## v0.4.0 — Meta-feature Extraction
+## v0.4.0 - Meta-feature Extraction
 
 ### Features
 
-Extract statistical meta-features including
+Extract statistical meta-features including:
 
 - Mean
 - Variance
@@ -81,13 +108,13 @@ Extract statistical meta-features including
 
 ---
 
-## v0.5.0 — Recommendation Engine
+## v0.5.0 - Recommendation Engine
 
 ### Features
 
 Recommend suitable forecasting models based on extracted meta-features.
 
-Initial supported models
+Initial supported models:
 
 - ARIMA
 - ETS
@@ -99,19 +126,19 @@ Future versions may support additional forecasting models.
 
 ---
 
-## v0.6.0 — Forecasting
+## v0.6.0 - Forecasting
 
 ### Features
 
 Unified forecasting interface.
 
-Users should be able to write
+Users should be able to write:
 
 ```python
 forecast = tsmeta.forecast(df)
 ```
 
-Support
+Support:
 
 - Automatic model selection
 - Manual model selection
@@ -119,26 +146,26 @@ Support
 
 ---
 
-## v0.7.0 — Benchmarking
+## v0.7.0 - Benchmarking
 
 ### Features
 
-Compare forecasting models using
+Compare forecasting models using:
 
 - MAE
 - RMSE
 - MAPE
-- R² (where applicable)
+- R2 where applicable
 
 Generate comparison tables.
 
 ---
 
-## v0.8.0 — Visualization
+## v0.8.0 - Visualization
 
 ### Features
 
-Generate plots including
+Generate plots including:
 
 - Forecast plots
 - Trend plots
@@ -148,13 +175,13 @@ Generate plots including
 
 ---
 
-## v0.9.0 — Reporting
+## v0.9.0 - Reporting
 
 ### Features
 
 Generate comprehensive reports.
 
-Possible outputs
+Possible outputs:
 
 - HTML
 - Markdown
@@ -162,7 +189,7 @@ Possible outputs
 
 ---
 
-## v1.0.0 — Stable Release
+## v1.0.0 - Stable Release
 
 ### Goals
 
@@ -177,7 +204,7 @@ Possible outputs
 
 # Future Ideas
 
-Potential future additions include
+Potential future additions include:
 
 - Deep Learning forecasting
 - Hierarchical forecasting
@@ -193,7 +220,7 @@ Potential future additions include
 
 # Development Philosophy
 
-Every release should
+Every release should:
 
 - Improve usability
 - Maintain backwards compatibility whenever possible
